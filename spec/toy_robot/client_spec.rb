@@ -3,6 +3,7 @@ require "spec_helper"
 describe Client do
   let(:client) { build :client }
   let(:robot) { client.instance_variable_get "@robot" }
+  let(:arena) { client.instance_variable_get "@arena" }
 
   describe "#parse" do
     context 'when command is "place"' do
@@ -11,8 +12,9 @@ describe Client do
 
         it "sends execute to PlaceCommand.new robot: @robot, command: input" do
           dbl = instance_double "PlaceCommand"
-          expect(PlaceCommand).to(receive(:new).with(robot:   robot,
-                                                     command: input) { dbl })
+          expect(PlaceCommand).to(receive(:new).with(robot: robot,
+                                                     command: input,
+                                                     arena: arena) { dbl })
           expect(dbl).to receive :execute
           client.parse input
         end
@@ -23,8 +25,9 @@ describe Client do
 
         it "sends execute to PlaceCommand.new robot: @robot, command: input" do
           dbl = instance_double "PlaceCommand"
-          expect(PlaceCommand).to(receive(:new).with(robot:   robot,
-                                                     command: input) { dbl })
+          expect(PlaceCommand).to(receive(:new).with(robot: robot,
+                                                     command: input,
+                                                     arena: arena) { dbl })
           expect(dbl).to receive :execute
           client.parse input
         end

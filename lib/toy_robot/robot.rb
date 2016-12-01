@@ -1,38 +1,29 @@
 class Robot
-  attr_accessor :position, :arena
+  attr_accessor :position
 
-  def initialize(position: NullPosition.new, arena:)
+  def initialize(position: NullPosition.new)
     @position = position
-    @arena    = arena
   end
 
   def place(new_position)
-    @position = safely_go_to new_position
+    @position = new_position
   end
 
   def move
-    @position = safely_go_to @position.advance
+    @position.advance
   end
 
   def left
-    @position = @position.left
+    @position.left
   end
 
   def right
-    @position = @position.right
+    @position.right
   end
 
   def report
     puts @position.to_s
   end
 
-  private
-
-  def safely_go_to(new_position)
-    if @arena.inbounds? new_position.x_coord, new_position.y_coord
-      new_position
-    else
-      @position
-    end
-  end
+  alias advance move
 end

@@ -30,7 +30,7 @@ describe Robot do
 
     context "when in null position" do
       it "doesn't change the robot's @position" do
-        expect { robot.move }.not_to change { robot.position }
+        expect { robot.move }.not_to change { robot.position.y_coord }
       end
     end
 
@@ -38,7 +38,7 @@ describe Robot do
       let(:robot) { build :robot_in_position }
 
       it "changes the robot's @position" do
-        expect { robot.move }.to change { robot.position }
+        expect { robot.move }.to change { robot.position.y_coord }
       end
     end
   end

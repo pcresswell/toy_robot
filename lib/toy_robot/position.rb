@@ -1,31 +1,47 @@
 class Position
-  attr_reader :x_coord, :y_coord, :direction
+  attr_reader :x_coord, :y_coord, :direction, :arena
 
-  def initialize(x_coord: 0, y_coord: 0, direction: North)
-    @x_coord   = x_coord
-    @y_coord   = y_coord
+  def initialize(arena:, x_coord: 0, y_coord: 0, direction: North)
+    @x_coord = x_coord
+    @y_coord = y_coord
     @direction = direction
+    @arena = arena
   end
 
   def advance
-    Position.new(x_coord:   @x_coord + @direction::X_DISPLACEMENT,
-                 y_coord:   @y_coord + @direction::Y_DISPLACEMENT,
-                 direction: @direction)
+    move_to(@x_coord + @direction::X_DISPLACEMENT, @y_coord + @direction::Y_DISPLACEMENT)
   end
 
   def left
-    Position.new(x_coord:   @x_coord,
-                 y_coord:   @y_coord,
-                 direction: @direction.left)
+    @direction = @direction.left
   end
 
   def right
-    Position.new(x_coord:   @x_coord,
-                 y_coord:   @y_coord,
-                 direction: @direction.right)
+    @direction = @direction.right
   end
 
   def to_s
-    "#{@x_coord}, #{@y_coord}, #{@direction}"
+    is_within_arena_bounds? ? "#{@x_coord}, #{@y_coord}, #{@direction}" : 'No position'
+  end
+
+  private
+
+  def move_to(x, y)
+    return unless within_arena_bounds?(x, y)
+
+    @x_coord = x
+    @y_coord = y
+  end
+
+  def within_arena_bounds?(x, y)
+    if @arena.inbounds?(x, y)
+      true
+    else
+      false
+    end
+  end
+
+  def is_within_arena_bounds?
+    within_arena_bounds?(x_coord, y_coord)
   end
 end

@@ -3,8 +3,7 @@ FactoryGirl.define do
   end
 
   factory :robot do
-    association :arena, strategy: :build
-    initialize_with { new arena: arena }
+    initialize_with { new }
 
     factory :robot_in_position do
       association :position, strategy: :build
@@ -16,6 +15,8 @@ FactoryGirl.define do
   end
 
   factory :position do
+    association :arena, strategy: :build
+    initialize_with { new arena: arena }
   end
 
   factory :null_position do
@@ -23,15 +24,17 @@ FactoryGirl.define do
 
   factory :place_command do
     association :robot, strategy: :build
+    association :arena, strategy: :build
 
     factory :place_command_with_inbounds_params do
       command = "place 0, 0, north"
-      initialize_with { new robot: robot, command: command }
+      initialize_with { new robot: robot, command: command, arena: arena }
     end
 
     factory :place_command_with_out_of_bounds_params do
+
       command = "place 100, 100, west"
-      initialize_with { new robot: robot, command: command }
+      initialize_with { new robot: robot, command: command, arena: arena }
     end
   end
 

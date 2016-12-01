@@ -5,28 +5,12 @@ describe PlaceCommand do
     context "when given inbounds params" do
       let(:command) { build :place_command_with_inbounds_params }
 
-      it "sets robot position to a Position" do
-        command.execute
-        robot = command.instance_variable_get "@robot"
-        expect(robot.position.class).to be Position
-      end
-
       it "sets robot position coordinates to input params" do
         command.execute
         robot = command.instance_variable_get "@robot"
         params = command.instance_variable_get "@params"
         expect(robot.position.x_coord).to eq params[0].to_i
         expect(robot.position.y_coord).to eq params[1].to_i
-      end
-    end
-
-    context "when given out of bounds params" do
-      let(:command) { build :place_command_with_out_of_bounds_params }
-
-      it "sets robot position to a NullPosition" do
-        command.execute
-        robot = command.instance_variable_get "@robot"
-        expect(robot.position.class).to be NullPosition
       end
     end
   end
@@ -38,7 +22,7 @@ describe MoveCommand do
   describe "#execute" do
     it "sends move to @robot" do
       robot = command.instance_variable_get "@robot"
-      expect(robot).to receive :move
+      expect(robot).to receive :advance
       command.execute
     end
   end

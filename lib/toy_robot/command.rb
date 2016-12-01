@@ -1,12 +1,14 @@
 class PlaceCommand
-  def initialize(robot:, command:)
-    @robot  = robot
+  def initialize(robot:, command:, arena:)
+    @robot = robot
     @params = command[/\s.*/].delete(" ").split(",")
+    @arena = arena
   end
 
   def execute
-    @robot.place Position.new(x_coord:   x_coord,
-                              y_coord:   y_coord,
+    @robot.place Position.new(arena: @arena,
+                              x_coord: x_coord,
+                              y_coord: y_coord,
                               direction: direction)
   end
 
@@ -22,10 +24,14 @@ class PlaceCommand
 
   def direction
     case @params[2]
-    when "n", "north" then North
-    when "e", "east"  then East
-    when "s", "south" then South
-    when "w", "west"  then West
+      when "n", "north" then
+        North
+      when "e", "east" then
+        East
+      when "s", "south" then
+        South
+      when "w", "west" then
+        West
     end
   end
 end
@@ -36,7 +42,7 @@ class MoveCommand
   end
 
   def execute
-    @robot.move
+    @robot.advance
   end
 end
 
